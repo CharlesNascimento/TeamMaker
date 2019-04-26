@@ -5,12 +5,13 @@ import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.kansus.teammaker.LiveDataTestUtil
+import com.kansus.teammaker.android.data.AppDatabase
 import com.kansus.teammaker.data.TestData.GAME_ENTITY_1
 import com.kansus.teammaker.data.TestData.GAME_ENTITY_2
-import com.kansus.teammaker.data.dao.GameDao
-import com.kansus.teammaker.data.dao.PlayerDao
-import com.kansus.teammaker.data.entity.GameEntity
-import com.kansus.teammaker.data.entity.GamePlayerEntity
+import com.kansus.teammaker.android.data.dao.GameDao
+import com.kansus.teammaker.android.data.dao.PlayerDao
+import com.kansus.teammaker.android.data.entity.GameEntity
+import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Assert.assertThat

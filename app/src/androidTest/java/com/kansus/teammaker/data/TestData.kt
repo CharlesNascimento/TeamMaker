@@ -1,9 +1,9 @@
 package com.kansus.teammaker.data
 
-import com.kansus.teammaker.data.entity.FixtureEntity
-import com.kansus.teammaker.data.entity.GameEntity
-import com.kansus.teammaker.data.entity.PlayerEntity
-import com.kansus.teammaker.data.entity.TeamEntity
+import com.kansus.teammaker.android.data.entity.FixtureEntity
+import com.kansus.teammaker.android.data.entity.GameEntity
+import com.kansus.teammaker.android.data.entity.PlayerEntity
+import com.kansus.teammaker.android.data.entity.TeamEntity
 import java.util.*
 
 /**
