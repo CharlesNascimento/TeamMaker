@@ -2,18 +2,17 @@ package com.kansus.teammaker.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.kansus.teammaker.LiveDataTestUtil
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.kansus.teammaker.android.data.AppDatabase
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_1
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_2
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_1
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_2
 import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import com.kansus.teammaker.android.data.entity.PlayerEntity
+import TestData.GAME_ENTITY_1
+import TestData.GAME_ENTITY_2
+import TestData.PLAYER_ENTITY_1
+import TestData.PLAYER_ENTITY_2
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.Matchers.empty
@@ -42,7 +41,7 @@ class PlayerDaoTest {
     @Before
     fun initDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getContext(),
+            InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java
         )
             .allowMainThreadQueries()
@@ -60,7 +59,7 @@ class PlayerDaoTest {
     @Test
     @Throws(InterruptedException::class)
     fun getPlayersWhenEmpty() {
-        val players = LiveDataTestUtil.getValue(mPlayerDao.getAll())
+        val players = mPlayerDao.getAll()
 
         assertThat(players, empty())
     }
@@ -70,7 +69,7 @@ class PlayerDaoTest {
     fun getPlayersAfterInserted() {
         insertTestPlayers()
 
-        val players = LiveDataTestUtil.getValue(mPlayerDao.getAll())
+        val players = mPlayerDao.getAll()
 
         assertThat(players, hasSize(2))
     }
@@ -80,7 +79,7 @@ class PlayerDaoTest {
     fun getPlayerById() {
         insertTestPlayers()
 
-        val player = LiveDataTestUtil.getValue(mPlayerDao.get(2))
+        val player = mPlayerDao.get(2)
 
         assertThat(player, equalTo(PLAYER_ENTITY_2))
     }
@@ -90,8 +89,8 @@ class PlayerDaoTest {
     fun getGamePlayers() {
         insertGamePlayers()
 
-        val game1Players = LiveDataTestUtil.getValue(mPlayerDao.getGamePlayers(1))
-        val game2Players = LiveDataTestUtil.getValue(mPlayerDao.getGamePlayers(2))
+        val game1Players = mPlayerDao.getGamePlayers(1)
+        val game2Players = mPlayerDao.getGamePlayers(2)
 
         assertThat(game1Players, hasSize(2))
         assertThat(game2Players, empty())
@@ -105,7 +104,7 @@ class PlayerDaoTest {
 
         mPlayerDao.insert(playerUpdate)
 
-        val player = LiveDataTestUtil.getValue(mPlayerDao.get(1))
+        val player = mPlayerDao.get(1)
         assertThat(player, equalTo(playerUpdate))
     }
 
@@ -115,9 +114,9 @@ class PlayerDaoTest {
         insertGamePlayers()
 
         mPlayerDao.delete(PLAYER_ENTITY_1)
-0
-        val player = LiveDataTestUtil.getValue(mPlayerDao.get(1))
-        val game1Players = LiveDataTestUtil.getValue(mPlayerDao.getGamePlayers(1))
+
+        val player = mPlayerDao.get(1)
+        val game1Players = mPlayerDao.getGamePlayers(1)
 
         assertThat(player, nullValue())
         assertThat(game1Players, hasSize(1))

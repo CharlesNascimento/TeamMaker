@@ -1,20 +1,12 @@
 package com.kansus.teammaker.data
 
+import TestData
 import android.database.sqlite.SQLiteConstraintException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.kansus.teammaker.LiveDataTestUtil
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.kansus.teammaker.android.data.AppDatabase
-import com.kansus.teammaker.data.TestData.FIXTURE_ENTITY_1
-import com.kansus.teammaker.data.TestData.FIXTURE_ENTITY_2
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_1
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_2
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_1
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_2
-import com.kansus.teammaker.data.TestData.TEAM_ENTITY_1
-import com.kansus.teammaker.data.TestData.TEAM_ENTITY_2
 import com.kansus.teammaker.android.data.dao.FixtureDao
 import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
@@ -22,6 +14,14 @@ import com.kansus.teammaker.android.data.dao.TeamDao
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import com.kansus.teammaker.android.data.entity.TeamEntity
 import com.kansus.teammaker.android.data.entity.TeamPlayerEntity
+import TestData.FIXTURE_ENTITY_1
+import TestData.FIXTURE_ENTITY_2
+import TestData.GAME_ENTITY_1
+import TestData.GAME_ENTITY_2
+import TestData.PLAYER_ENTITY_1
+import TestData.PLAYER_ENTITY_2
+import TestData.TEAM_ENTITY_1
+import TestData.TEAM_ENTITY_2
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -50,7 +50,7 @@ class TeamDaoTest {
     @Before
     fun initDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getContext(),
+            InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java
         )
             .allowMainThreadQueries()
@@ -70,7 +70,7 @@ class TeamDaoTest {
     @Test
     @Throws(InterruptedException::class)
     fun getTeamsWhenEmpty() {
-        val teams = LiveDataTestUtil.getValue(mTeamDao.getAll())
+        val teams = mTeamDao.getAll()
 
         assertThat(teams, empty())
     }
@@ -80,7 +80,7 @@ class TeamDaoTest {
     fun getTeamsAfterInserted() {
         insertTestData()
 
-        val teams = LiveDataTestUtil.getValue(mTeamDao.getAll())
+        val teams = mTeamDao.getAll()
 
         assertThat(teams, hasSize(2))
     }
@@ -90,7 +90,7 @@ class TeamDaoTest {
     fun getTeamById() {
         insertTestData()
 
-        val team = LiveDataTestUtil.getValue(mTeamDao.get(2))
+        val team = mTeamDao.get(2)
 
         assertThat(team, equalTo(TEAM_ENTITY_2))
     }
@@ -100,8 +100,8 @@ class TeamDaoTest {
     fun getTeamPlayers() {
         insertTestData()
 
-        val team1Players = LiveDataTestUtil.getValue(mPlayerDao.getTeamPlayers(1))
-        val team2Players = LiveDataTestUtil.getValue(mPlayerDao.getTeamPlayers(2))
+        val team1Players = mPlayerDao.getTeamPlayers(1)
+        val team2Players = mPlayerDao.getTeamPlayers(2)
 
         assertThat(team1Players, hasSize(2))
         assertThat(team2Players, empty())
@@ -123,7 +123,7 @@ class TeamDaoTest {
 
         mTeamDao.insert(teamUpdate)
 
-        val team = LiveDataTestUtil.getValue(mTeamDao.get(1))
+        val team = mTeamDao.get(1)
         assertThat(team, equalTo(teamUpdate))
     }
 
@@ -134,7 +134,7 @@ class TeamDaoTest {
 
         mTeamDao.delete(TEAM_ENTITY_1)
 
-        val team = LiveDataTestUtil.getValue(mTeamDao.get(1))
+        val team = mTeamDao.get(1)
 
         assertThat(team, nullValue())
     }

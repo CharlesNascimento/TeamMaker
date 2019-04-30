@@ -1,17 +1,17 @@
 package com.kansus.teammaker.data
 
+import TestData
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.kansus.teammaker.LiveDataTestUtil
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.kansus.teammaker.android.data.AppDatabase
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_1
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_2
 import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
 import com.kansus.teammaker.android.data.entity.GameEntity
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
+import TestData.GAME_ENTITY_1
+import TestData.GAME_ENTITY_2
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -37,7 +37,7 @@ class GameDaoTest {
     @Before
     fun initDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getContext(),
+            InstrumentationRegistry.getInstrumentation().context,
             AppDatabase::class.java
         )
             .allowMainThreadQueries()
@@ -55,7 +55,7 @@ class GameDaoTest {
     @Test
     @Throws(InterruptedException::class)
     fun getGamesWhenNoGamesInserted() {
-        val games = LiveDataTestUtil.getValue(mGameDao.getAll())
+        val games = mGameDao.getAll()
 
         assertThat(games, empty())
     }
@@ -65,7 +65,7 @@ class GameDaoTest {
     fun getGamesAfterInserted() {
         insertTestGames()
 
-        val games = LiveDataTestUtil.getValue(mGameDao.getAll())
+        val games = mGameDao.getAll()
 
         assertThat(games, hasSize(2))
     }
@@ -75,7 +75,7 @@ class GameDaoTest {
     fun getGameById() {
         insertTestGames()
 
-        val game = LiveDataTestUtil.getValue(mGameDao.get(2))
+        val game = mGameDao.get(2)
 
         assertThat(game, equalTo(GAME_ENTITY_2))
     }
@@ -88,7 +88,7 @@ class GameDaoTest {
 
         mGameDao.insert(gameUpdate)
 
-        val game = LiveDataTestUtil.getValue(mGameDao.get(1))
+        val game = mGameDao.get(1)
         assertThat(game, equalTo(gameUpdate))
     }
 
@@ -99,8 +99,8 @@ class GameDaoTest {
 
         mGameDao.delete(GAME_ENTITY_1)
 
-        val game = LiveDataTestUtil.getValue(mGameDao.get(1))
-        val game1Players = LiveDataTestUtil.getValue(mPlayerDao.getGamePlayers(1))
+        val game = mGameDao.get(1)
+        val game1Players = mPlayerDao.getGamePlayers(1)
 
         assertThat(game, nullValue())
         assertThat(game1Players, empty())

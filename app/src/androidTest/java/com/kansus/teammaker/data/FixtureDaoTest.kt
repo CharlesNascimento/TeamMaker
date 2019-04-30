@@ -1,24 +1,24 @@
 package com.kansus.teammaker.data
 
+import TestData
 import android.database.sqlite.SQLiteConstraintException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.kansus.teammaker.LiveDataTestUtil
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.kansus.teammaker.android.data.AppDatabase
-import com.kansus.teammaker.data.TestData.FIXTURE_ENTITY_1
-import com.kansus.teammaker.data.TestData.FIXTURE_ENTITY_2
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_1
-import com.kansus.teammaker.data.TestData.GAME_ENTITY_2
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_1
-import com.kansus.teammaker.data.TestData.PLAYER_ENTITY_2
 import com.kansus.teammaker.android.data.dao.FixtureDao
 import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
 import com.kansus.teammaker.android.data.dao.TeamDao
 import com.kansus.teammaker.android.data.entity.FixtureEntity
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
+import TestData.FIXTURE_ENTITY_1
+import TestData.FIXTURE_ENTITY_2
+import TestData.GAME_ENTITY_1
+import TestData.GAME_ENTITY_2
+import TestData.PLAYER_ENTITY_1
+import TestData.PLAYER_ENTITY_2
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.Matchers.empty
@@ -50,7 +50,7 @@ class FixtureDaoTest {
     @Before
     fun initDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getContext(),
+            InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java
         )
             .allowMainThreadQueries()
@@ -70,7 +70,7 @@ class FixtureDaoTest {
     @Test
     @Throws(InterruptedException::class)
     fun getFixturesWhenEmpty() {
-        val fixtures = LiveDataTestUtil.getValue(mFixtureDao.getAll())
+        val fixtures = mFixtureDao.getAll(GAME_ENTITY_1.id)
 
         assertThat(fixtures, empty())
     }
@@ -80,7 +80,7 @@ class FixtureDaoTest {
     fun getFixturesAfterInserted() {
         insertTestData()
 
-        val fixtures = LiveDataTestUtil.getValue(mFixtureDao.getAll())
+        val fixtures = mFixtureDao.getAll(GAME_ENTITY_1.id)
 
         assertThat(fixtures, hasSize(2))
     }
@@ -90,7 +90,7 @@ class FixtureDaoTest {
     fun getFixtureById() {
         insertTestData()
 
-        val fixture = LiveDataTestUtil.getValue(mFixtureDao.get(2))
+        val fixture = mFixtureDao.get(2)
 
         assertThat(fixture, equalTo(FIXTURE_ENTITY_2))
     }
@@ -100,8 +100,8 @@ class FixtureDaoTest {
     fun getFixtureTeams() {
         insertTestData()
 
-        val fixture1 = LiveDataTestUtil.getValue(mFixtureDao.getWithTeams(1))
-        val fixture2 = LiveDataTestUtil.getValue(mFixtureDao.getWithTeams(2))
+        val fixture1 = mFixtureDao.getWithTeams(1)
+        val fixture2 = mFixtureDao.getWithTeams(2)
 
         assertThat(fixture1.teams, hasSize(2))
         assertThat(fixture2.teams, empty())
@@ -123,7 +123,7 @@ class FixtureDaoTest {
 
         mFixtureDao.insert(fixtureUpdate)
 
-        val fixture = LiveDataTestUtil.getValue(mFixtureDao.get(1))
+        val fixture = mFixtureDao.get(1)
         assertThat(fixture, equalTo(fixtureUpdate))
     }
 
@@ -134,9 +134,9 @@ class FixtureDaoTest {
 
         mFixtureDao.delete(FIXTURE_ENTITY_1)
 
-        val fixture = LiveDataTestUtil.getValue(mFixtureDao.getWithTeams(1))
-        val team1 = LiveDataTestUtil.getValue(mTeamDao.get(1))
-        val team2 = LiveDataTestUtil.getValue(mTeamDao.get(1))
+        val fixture = mFixtureDao.getWithTeams(1)
+        val team1 = mTeamDao.get(1)
+        val team2 = mTeamDao.get(1)
 
         assertThat(fixture, nullValue())
         assertThat(team1, nullValue())

@@ -1,5 +1,3 @@
-package com.kansus.teammaker.data
-
 import com.kansus.teammaker.android.data.entity.FixtureEntity
 import com.kansus.teammaker.android.data.entity.GameEntity
 import com.kansus.teammaker.android.data.entity.PlayerEntity
@@ -30,6 +28,8 @@ object TestData {
     val FIXTURE_ENTITY_1 = FixtureEntity(1, Date(), GAME_ENTITY_1.id)
 
     val FIXTURE_ENTITY_2 = FixtureEntity(2, Date(), GAME_ENTITY_1.id)
+
+    val FIXTURES = Arrays.asList(FIXTURE_ENTITY_1, FIXTURE_ENTITY_2)
 
     val TEAM_ENTITY_1 = TeamEntity(1, Date(), FIXTURE_ENTITY_1.id)
 

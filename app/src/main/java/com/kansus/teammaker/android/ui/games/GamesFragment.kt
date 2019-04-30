@@ -8,16 +8,12 @@ import androidx.annotation.StringRes
 import com.kansus.teammaker.R
 import com.kansus.teammaker.android.Navigator
 import com.kansus.teammaker.android.core.BaseFragment
-import com.kansus.teammaker.android.data.AppDatabase
-import com.kansus.teammaker.android.data.entity.GameEntity
 import com.kansus.teammaker.android.extension.*
 import com.kansus.teammaker.core.exception.Failure
 import com.kansus.teammaker.core.exception.Failure.NetworkConnection
 import com.kansus.teammaker.core.exception.Failure.ServerError
 import com.kansus.teammaker.domain.model.Game
 import kotlinx.android.synthetic.main.fragment_games.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -28,26 +24,19 @@ class GamesFragment : BaseFragment() {
     @Inject
     lateinit var navigator: Navigator
 
-    //@Inject
-    lateinit var gamesAdapter: GamesAdapter
+    private lateinit var gamesAdapter: GamesAdapter
 
     private lateinit var viewModel: GamesViewModel
-
-    @Inject lateinit var appDatabase: AppDatabase
 
     override fun layoutId() = R.layout.fragment_games
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        GlobalScope.launch { appDatabase.gameDao().insert(GameEntity(0, "Game 1", "Game 1 Description")) }
-
         viewModel = viewModel(viewModelFactory) {
             observe(games, ::showGames)
             failure(failure, ::handleFailure)
         }
-
-        Log.d("ss", "sss")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,11 +92,5 @@ class GamesFragment : BaseFragment() {
         //emptyView.visible()
         hideProgress()
         notifyWithAction(message, R.string.app_name, ::loadGames)
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() = GamesFragment()
     }
 }

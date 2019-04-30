@@ -8,9 +8,10 @@ import com.kansus.teammaker.domain.usecase.DeleteGameUseCase
 import com.kansus.teammaker.domain.usecase.GetGamesUseCase
 import javax.inject.Inject
 
-class GamesViewModel
-@Inject constructor(private val getGamesUserCase: GetGamesUseCase,
-                    private var deleteGameUseCase: DeleteGameUseCase) : BaseViewModel() {
+class GamesViewModel @Inject constructor(
+    private val getGamesUserCase: GetGamesUseCase,
+    private var deleteGameUseCase: DeleteGameUseCase
+) : BaseViewModel() {
 
     var games: MutableLiveData<List<Game>> = MutableLiveData()
 
