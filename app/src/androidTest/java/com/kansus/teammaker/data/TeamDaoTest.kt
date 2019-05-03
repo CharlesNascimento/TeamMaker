@@ -1,6 +1,6 @@
 package com.kansus.teammaker.data
 
-import TestData
+import com.kansus.teammaker.TestData
 import android.database.sqlite.SQLiteConstraintException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -14,14 +14,14 @@ import com.kansus.teammaker.android.data.dao.TeamDao
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import com.kansus.teammaker.android.data.entity.TeamEntity
 import com.kansus.teammaker.android.data.entity.TeamPlayerEntity
-import TestData.FIXTURE_ENTITY_1
-import TestData.FIXTURE_ENTITY_2
-import TestData.GAME_ENTITY_1
-import TestData.GAME_ENTITY_2
-import TestData.PLAYER_ENTITY_1
-import TestData.PLAYER_ENTITY_2
-import TestData.TEAM_ENTITY_1
-import TestData.TEAM_ENTITY_2
+import com.kansus.teammaker.TestData.FIXTURE_ENTITY_1
+import com.kansus.teammaker.TestData.FIXTURE_ENTITY_2
+import com.kansus.teammaker.TestData.GAME_ENTITY_1
+import com.kansus.teammaker.TestData.GAME_ENTITY_2
+import com.kansus.teammaker.TestData.PLAYER_ENTITY_1
+import com.kansus.teammaker.TestData.PLAYER_ENTITY_2
+import com.kansus.teammaker.TestData.TEAM_ENTITY_1
+import com.kansus.teammaker.TestData.TEAM_ENTITY_2
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -146,8 +146,8 @@ class TeamDaoTest {
         mPlayerDao.insert(PLAYER_ENTITY_1)
         mPlayerDao.insert(PLAYER_ENTITY_2)
 
-        mGameDao.insert(GamePlayerEntity(1, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_1.id))
-        mGameDao.insert(GamePlayerEntity(2, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_2.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(1, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_1.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(2, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_2.id))
 
         mFixtureDao.insert(FIXTURE_ENTITY_1)
         mFixtureDao.insert(FIXTURE_ENTITY_2)

@@ -9,10 +9,10 @@ import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import com.kansus.teammaker.android.data.entity.PlayerEntity
-import TestData.GAME_ENTITY_1
-import TestData.GAME_ENTITY_2
-import TestData.PLAYER_ENTITY_1
-import TestData.PLAYER_ENTITY_2
+import com.kansus.teammaker.TestData.GAME_ENTITY_1
+import com.kansus.teammaker.TestData.GAME_ENTITY_2
+import com.kansus.teammaker.TestData.PLAYER_ENTITY_1
+import com.kansus.teammaker.TestData.PLAYER_ENTITY_2
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.Matchers.empty
@@ -136,7 +136,7 @@ class PlayerDaoTest {
         insertTestGames()
         insertTestPlayers()
 
-        mGameDao.insert(GamePlayerEntity(1, GAME_ENTITY_1.id, PLAYER_ENTITY_1.id))
-        mGameDao.insert(GamePlayerEntity(2, GAME_ENTITY_1.id, PLAYER_ENTITY_2.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(1, GAME_ENTITY_1.id, PLAYER_ENTITY_1.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(2, GAME_ENTITY_1.id, PLAYER_ENTITY_2.id))
     }
 }

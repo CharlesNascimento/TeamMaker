@@ -1,5 +1,10 @@
 package com.kansus.teammaker.core
 
+import com.kansus.teammaker.core.Either.Left
+import com.kansus.teammaker.core.Either.Right
+import com.kansus.teammaker.core.exception.Failure
+
+
 /**
  * Represents a value of one of two possible types (a disjoint union).
  * Instances of [Either] are either an instance of [Left] or [Right].
@@ -42,3 +47,11 @@ fun <T, L, R> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
     }
 
 fun <T, L, R> Either<L, R>.map(fn: (R) -> (T)): Either<L, T> = this.flatMap(fn.c(::right))
+
+inline fun <T, R> T.runEither(failure: Failure, block: T.() -> R): Either<Failure, R> {
+    return try {
+        Either.Right(block())
+    } catch (e: Throwable) {
+        Either.Left(failure)
+    }
+}

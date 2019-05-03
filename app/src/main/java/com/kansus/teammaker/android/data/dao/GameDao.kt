@@ -14,7 +14,7 @@ interface GameDao {
     fun getAll(): List<GameEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(game: GamePlayerEntity)
+    fun insertGamePlayer(game: GamePlayerEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(game: GameEntity)

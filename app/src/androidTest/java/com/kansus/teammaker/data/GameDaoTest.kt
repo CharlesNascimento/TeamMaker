@@ -1,6 +1,6 @@
 package com.kansus.teammaker.data
 
-import TestData
+import com.kansus.teammaker.TestData
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,8 +10,8 @@ import com.kansus.teammaker.android.data.dao.GameDao
 import com.kansus.teammaker.android.data.dao.PlayerDao
 import com.kansus.teammaker.android.data.entity.GameEntity
 import com.kansus.teammaker.android.data.entity.GamePlayerEntity
-import TestData.GAME_ENTITY_1
-import TestData.GAME_ENTITY_2
+import com.kansus.teammaker.TestData.GAME_ENTITY_1
+import com.kansus.teammaker.TestData.GAME_ENTITY_2
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -120,7 +120,7 @@ class GameDaoTest {
         insertTestGames()
         insertTestPlayers()
 
-        mGameDao.insert(GamePlayerEntity(1, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_1.id))
-        mGameDao.insert(GamePlayerEntity(2, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_2.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(1, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_1.id))
+        mGameDao.insertGamePlayer(GamePlayerEntity(2, GAME_ENTITY_1.id, TestData.PLAYER_ENTITY_2.id))
     }
 }

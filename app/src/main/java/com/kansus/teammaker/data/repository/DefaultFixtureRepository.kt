@@ -13,15 +13,11 @@ class DefaultFixtureRepository @Inject constructor(
 ) : FixtureRepository {
 
     override fun get(fixtureId: Int): Either<Failure, Fixture> {
-        return Either.Right(Fixture(0, Date(), 1, listOf()))//gameDataSource.get(gameId)
+        return fixtureDataSource.get(fixtureId)
     }
 
-    override fun getWithTeams(fixtureId: Int): Either<Failure, Fixture> {
-        return Either.Right(Fixture(0, Date(), 1, listOf()))
-    }
-
-    override fun getAll(): Either<Failure, List<Fixture>> {
-        return Either.Right(listOf())//gameDataSource.getAll()
+    override fun getAll(gameId: Int): Either<Failure, List<Fixture>> {
+        return fixtureDataSource.getAll(gameId)
     }
 
     override fun insert(fixture: Fixture) {

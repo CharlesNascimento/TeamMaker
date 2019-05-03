@@ -38,15 +38,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 android.sourceSets {
     test {
-        java.srcDirs += "$projectDir/src/testShared"
+        java.srcDirs += "$projectDir/src/testShared/java"
     }
 
     androidTest {
-        java.srcDirs += "$projectDir/src/testShared"
+        java.srcDirs += "$projectDir/src/testShared/java"
     }
 }
 
@@ -63,13 +69,6 @@ dependencies {
     kapt applicationDependencies.roomCompiler
     compileOnly applicationDependencies.javaxAnnotation
     compileOnly applicationDependencies.javaxInject
-
-    androidTestImplementation 'androidx.test:core:1.1.0'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1-alpha04'
-
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
 
     //Application dependencies
     implementation applicationDependencies.kotlin
@@ -100,6 +99,11 @@ dependencies {
     testImplementation unitTestDependencies.kluent
 
     //Acceptance tests dependencies
+    androidTestImplementation 'androidx.test:core:1.1.0'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1-alpha04'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
     androidTestImplementation acceptanceTestDependencies.archCoreTesting
     //androidTestImplementation acceptanceTestDependencies.espressoCore
     //androidTestImplementation acceptanceTestDependencies.espressoIntents

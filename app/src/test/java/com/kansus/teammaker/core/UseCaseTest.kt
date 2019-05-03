@@ -1,7 +1,6 @@
-package com.kansus.teammaker
+package com.kansus.teammaker.core
 
-import com.kansus.teammaker.core.Either
-import com.kansus.teammaker.core.UseCase
+import com.kansus.teammaker.AndroidTest
 import com.kansus.teammaker.core.exception.Failure
 import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldEqual
@@ -38,6 +37,10 @@ class UseCaseTest : AndroidTest() {
     data class MyParams(val name: String)
 
     private inner class MyUseCase : UseCase<MyType, MyParams>() {
-        override suspend fun run(params: MyParams) = Either.Right(MyType(TYPE_TEST))
+        override suspend fun run(params: MyParams) = Either.Right(
+            MyType(
+                TYPE_TEST
+            )
+        )
     }
 }

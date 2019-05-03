@@ -8,9 +8,7 @@ interface FixtureRepository {
 
     fun get(fixtureId: Int): Either<Failure, Fixture>
 
-    fun getWithTeams(fixtureId: Int): Either<Failure, Fixture>
-
-    fun getAll(): Either<Failure, List<Fixture>>
+    fun getAll(gameId: Int): Either<Failure, List<Fixture>>
 
     fun insert(fixture: Fixture)
 
