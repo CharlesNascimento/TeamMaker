@@ -19,6 +19,7 @@ import org.amshove.kluent.`should equal`
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.BDDMockito.then
 import org.mockito.Mock
 
 class RoomGameDataSourceTest : UnitTest() {
@@ -53,8 +54,8 @@ class RoomGameDataSourceTest : UnitTest() {
 
         val game = roomGameDataSource.get(expected.id)
 
-        verify(gameDao).get(expected.id)
-        game `should equal` Right(expected.toGame())
+        then(gameDao).should().get(expected.id)
+        then { game `should equal` Right(expected.toGame()) }
     }
 
     @Test
@@ -64,8 +65,8 @@ class RoomGameDataSourceTest : UnitTest() {
 
         val game = roomGameDataSource.get(expected.id)
 
-        verify(gameDao).get(expected.id)
-        game `should equal` Left(DatabaseError)
+        then(gameDao).should().get(expected.id)
+        then { game `should equal` Left(DatabaseError) }
     }
 
     @Test
@@ -75,8 +76,8 @@ class RoomGameDataSourceTest : UnitTest() {
 
         val games = roomGameDataSource.getAll()
 
-        verify(gameDao).getAll()
-        games `should equal` Right(expected.toGameList())
+        then(gameDao).should().getAll()
+        then { games `should equal` Right(expected.toGameList()) }
     }
 
     @Test
@@ -85,8 +86,8 @@ class RoomGameDataSourceTest : UnitTest() {
 
         val games = roomGameDataSource.getAll()
 
-        verify(gameDao).getAll()
-        games `should equal` Left(DatabaseError)
+        then(gameDao).should().getAll()
+        then { games `should equal` Left(DatabaseError) }
     }
 
     @Test
@@ -95,15 +96,18 @@ class RoomGameDataSourceTest : UnitTest() {
 
         roomGameDataSource.insert(expected.toGame())
 
-        verify(gameDao).insert(expected)
+        then(gameDao).should().insert(expected)
     }
 
-    @Test(expected = SQLiteException::class)
-    fun `insert rethrows DAO exception`() {
+    @Test
+    fun `insert returns left on failure`() {
         val expected = TestData.GAME_ENTITY_1
         given { gameDao.insert(expected) }.willThrow(SQLiteException())
 
-        roomGameDataSource.insert(expected.toGame())
+        val result = roomGameDataSource.insert(expected.toGame())
+
+        then(gameDao).should().insert(expected)
+        then { result `should equal` Left(DatabaseError) }
     }
 
     @Test
@@ -112,7 +116,7 @@ class RoomGameDataSourceTest : UnitTest() {
 
         roomGameDataSource.insertGamePlayer(expected.gameId, expected.playerId)
 
-        verify(gameDao).insertGamePlayer(expected)
+        then(gameDao).should().insertGamePlayer(expected)
     }
 
     @Test(expected = SQLiteException::class)
@@ -132,12 +136,15 @@ class RoomGameDataSourceTest : UnitTest() {
         verify(gameDao).delete(expected)
     }
 
-    @Test(expected = SQLiteException::class)
-    fun `delete rethrows DAO exception`() {
+    @Test
+    fun `delete returns left on failure`() {
         val expected = TestData.GAME_ENTITY_1
         given { gameDao.delete(expected) }.willThrow(SQLiteException())
 
-        roomGameDataSource.delete(expected.toGame())
+        val result = roomGameDataSource.delete(expected.toGame())
+
+        then(gameDao).should().delete(expected)
+        then { result `should equal` Left(DatabaseError) }
     }
 
     @Test

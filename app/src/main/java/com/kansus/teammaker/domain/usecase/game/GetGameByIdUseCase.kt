@@ -1,4 +1,4 @@
-package com.kansus.teammaker.domain.usecase
+package com.kansus.teammaker.domain.usecase.game
 
 import com.kansus.teammaker.core.UseCase
 import com.kansus.teammaker.domain.model.Game

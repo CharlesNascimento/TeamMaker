@@ -10,11 +10,11 @@ interface GameDataSource {
 
     fun getAll(): Either<Failure, List<Game>>
 
-    fun insert(game: Game)
+    fun insert(game: Game): Either<Failure, Unit>
 
     fun insertGamePlayer(gameId: Int, playerId: Int)
 
-    fun delete(game: Game)
+    fun delete(game: Game): Either<Failure, Unit>
 
     fun deleteGamePlayer(gameId: Int, playerId: Int)
 }

@@ -9,6 +9,7 @@ import com.kansus.teammaker.UnitTest
 import com.kansus.teammaker.core.Either.Left
 import com.kansus.teammaker.core.Either.Right
 import com.kansus.teammaker.core.exception.Failure
+import com.kansus.teammaker.core.exception.Failure.*
 import com.kansus.teammaker.data.source.GameDataSource
 import com.nhaarman.mockito_kotlin.given
 import org.amshove.kluent.`should contain`
@@ -49,12 +50,12 @@ class DefaultGameRepositoryTest : UnitTest() {
 
     @Test
     fun `get returns left on failure`() {
-        given { gameDataSource.get(1) }.willReturn(Left(Failure.DatabaseError))
+        given { gameDataSource.get(1) }.willReturn(Left(DatabaseError))
 
         val game = gameRepository.get(1)
 
         then(gameDataSource).should().get(1)
-        game `should equal` (Left(Failure.DatabaseError))
+        game `should equal` (Left(DatabaseError))
     }
 
     @Test
@@ -73,12 +74,12 @@ class DefaultGameRepositoryTest : UnitTest() {
 
     @Test
     fun `getAll returns left on failure`() {
-        given { gameDataSource.getAll() }.willReturn(Left(Failure.DatabaseError))
+        given { gameDataSource.getAll() }.willReturn(Left(DatabaseError))
 
         val games = gameRepository.getAll()
 
         then(gameDataSource).should().getAll()
-        games `should equal` (Left(Failure.DatabaseError))
+        games `should equal` (Left(DatabaseError))
     }
 
     @Test
@@ -102,20 +103,24 @@ class DefaultGameRepositoryTest : UnitTest() {
     }
 
     @Test
-    fun `insert calls data source successfully`() {
+    fun `insert returns right on success`() {
         val expected = GAME_1
 
-        gameRepository.insert(expected)
+        val result = gameRepository.insert(expected)
 
         then(gameDataSource).should().insert(expected)
+        then { result `should equal` Right(Unit) }
     }
 
-    @Test(expected = SQLiteException::class)
-    fun `insert rethrows data source exception`() {
+    @Test
+    fun `insert returns left on failure`() {
         val expected = GAME_1
-        given { gameDataSource.insert(expected) }.willThrow(SQLiteException())
+        given { gameDataSource.insert(expected) }.willReturn(Left(DatabaseError))
 
-        gameRepository.insert(expected)
+        val result = gameRepository.insert(expected)
+
+        then(gameDataSource).should().insert(expected)
+        then { result `should equal` Left(DatabaseError) }
     }
 
     @Test

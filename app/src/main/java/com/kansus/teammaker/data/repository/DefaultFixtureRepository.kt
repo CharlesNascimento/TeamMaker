@@ -5,7 +5,6 @@ import com.kansus.teammaker.core.exception.Failure
 import com.kansus.teammaker.data.source.FixtureDataSource
 import com.kansus.teammaker.domain.model.Fixture
 import com.kansus.teammaker.domain.repository.FixtureRepository
-import java.util.*
 import javax.inject.Inject
 
 class DefaultFixtureRepository @Inject constructor(

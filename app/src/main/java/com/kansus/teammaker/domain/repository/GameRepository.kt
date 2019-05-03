@@ -12,9 +12,9 @@ interface GameRepository {
 
     fun insertGamePlayer(gameId: Int, playerId: Int)
 
-    fun insert(game: Game)
+    fun insert(game: Game): Either<Failure, Unit>
 
-    fun delete(game: Game)
+    fun delete(game: Game): Either<Failure, Unit>
 
     fun deleteGamePlayer(gameId: Int, playerId: Int)
 }

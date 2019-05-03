@@ -5,8 +5,6 @@ import com.kansus.teammaker.android.data.entity.GamePlayerEntity
 import com.kansus.teammaker.android.data.mapper.toGame
 import com.kansus.teammaker.android.data.mapper.toGameEntity
 import com.kansus.teammaker.android.data.mapper.toGameList
-import com.kansus.teammaker.core.Either
-import com.kansus.teammaker.core.exception.Failure
 import com.kansus.teammaker.core.exception.Failure.DatabaseError
 import com.kansus.teammaker.core.runEither
 import com.kansus.teammaker.data.source.GameDataSource
@@ -16,15 +14,15 @@ class RoomGameDataSource(
     private val database: AppDatabase
 ) : GameDataSource {
 
-    override fun get(gameId: Int): Either<Failure, Game> = runEither(DatabaseError) {
+    override fun get(gameId: Int) = runEither(DatabaseError) {
         database.gameDao().get(gameId).toGame()
     }
 
-    override fun getAll(): Either<Failure, List<Game>> = runEither(DatabaseError) {
+    override fun getAll() = runEither(DatabaseError) {
         database.gameDao().getAll().toGameList()
     }
 
-    override fun insert(game: Game) {
+    override fun insert(game: Game) = runEither(DatabaseError) {
         database.gameDao().insert(game.toGameEntity())
     }
 
@@ -33,7 +31,7 @@ class RoomGameDataSource(
         database.gameDao().insertGamePlayer(gamePlayer)
     }
 
-    override fun delete(game: Game) {
+    override fun delete(game: Game) = runEither(DatabaseError) {
         database.gameDao().delete(game.toGameEntity())
     }
 

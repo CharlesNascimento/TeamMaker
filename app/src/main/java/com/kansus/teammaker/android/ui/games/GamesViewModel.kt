@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.kansus.teammaker.android.core.BaseViewModel
 import com.kansus.teammaker.core.UseCase
 import com.kansus.teammaker.domain.model.Game
-import com.kansus.teammaker.domain.usecase.DeleteGameUseCase
-import com.kansus.teammaker.domain.usecase.GetGamesUseCase
+import com.kansus.teammaker.domain.usecase.game.DeleteGameUseCase
+import com.kansus.teammaker.domain.usecase.game.GetGamesUseCase
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(

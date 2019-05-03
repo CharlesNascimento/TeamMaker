@@ -42,16 +42,16 @@ fun <A, B, C> ((A) -> B).c(f: (B) -> C): (A) -> C = {
 
 fun <T, L, R> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
     when (this) {
-        is Either.Left -> Either.Left(a)
-        is Either.Right -> fn(b)
+        is Left -> Left(a)
+        is Right -> fn(b)
     }
 
 fun <T, L, R> Either<L, R>.map(fn: (R) -> (T)): Either<L, T> = this.flatMap(fn.c(::right))
 
 inline fun <T, R> T.runEither(failure: Failure, block: T.() -> R): Either<Failure, R> {
     return try {
-        Either.Right(block())
+        Right(block())
     } catch (e: Throwable) {
-        Either.Left(failure)
+        Left(failure)
     }
 }
